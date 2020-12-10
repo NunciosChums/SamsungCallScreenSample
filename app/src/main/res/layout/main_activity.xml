@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="#00f"
+  tools:context=".MainActivity">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <Button
+      android:id="@+id/startButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="start" />
+
+    <Button
+      android:id="@+id/endButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="5dp"
+      android:text="stop" />
+  </LinearLayout>
+
+  <androidx.constraintlayout.motion.widget.MotionLayout
+    android:id="@+id/motionLayout"
+    android:layout_width="match_parent"
+    android:layout_height="300dp"
+    app:layoutDescription="@xml/main_activity_scene"
+    app:layout_constraintBottom_toBottomOf="parent">
+
+    <ImageView
+      android:id="@+id/acceptDragArea"
+      android:layout_width="300dp"
+      android:layout_height="300dp"
+      android:scaleType="fitXY"
+      android:src="@drawable/bg_btn_call_drag"
+      android:visibility="invisible"
+      app:layout_constraintBottom_toBottomOf="@id/acceptButton"
+      app:layout_constraintEnd_toEndOf="@id/acceptButton"
+      app:layout_constraintStart_toStartOf="@id/acceptButton"
+      app:layout_constraintTop_toTopOf="@id/acceptButton"
+      tools:visibility="visible" />
+
+    <ImageView
+      android:id="@+id/rejectDragArea"
+      android:layout_width="300dp"
+      android:layout_height="300dp"
+      android:scaleType="fitXY"
+      android:src="@drawable/bg_btn_call_drag"
+      android:visibility="invisible"
+      app:layout_constraintBottom_toBottomOf="@id/rejectButton"
+      app:layout_constraintEnd_toEndOf="@id/rejectButton"
+      app:layout_constraintStart_toStartOf="@id/rejectButton"
+      app:layout_constraintTop_toTopOf="@id/rejectButton"
+      tools:visibility="visible" />
+
+    <View
+      android:id="@+id/guide1"
+      android:layout_width="0dp"
+      android:layout_height="1dp"
+      app:layout_constraintEnd_toStartOf="@id/acceptButton"
+      app:layout_constraintHorizontal_chainStyle="spread"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="@id/acceptButton"
+      app:layout_constraintWidth_percent="0.1"
+      tools:background="#f00" />
+
+    <View
+      android:id="@+id/guide2"
+      android:layout_width="0dp"
+      android:layout_height="1dp"
+      app:layout_constraintEnd_toStartOf="@id/rejectButton"
+      app:layout_constraintStart_toEndOf="@id/acceptButton"
+      app:layout_constraintTop_toTopOf="@id/guide1"
+      app:layout_constraintWidth_percent="0.3"
+      tools:background="#f00" />
+
+    <View
+      android:id="@+id/guide3"
+      android:layout_width="0dp"
+      android:layout_height="1dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/rejectButton"
+      app:layout_constraintTop_toTopOf="@id/guide1"
+      app:layout_constraintWidth_percent="0.1"
+      tools:background="#f00" />
+
+    <ImageView
+      android:id="@+id/acceptButtonAnimationBackgroundView"
+      android:layout_width="60dp"
+      android:layout_height="60dp"
+      android:alpha="1"
+      android:background="@drawable/bg_btn_call_normal"
+      app:layout_constraintBottom_toBottomOf="@id/acceptButton"
+      app:layout_constraintEnd_toEndOf="@id/acceptButton"
+      app:layout_constraintStart_toStartOf="@id/acceptButton"
+      app:layout_constraintTop_toTopOf="@id/acceptButton" />
+
+    <ImageView
+      android:id="@+id/rejectButtonAnimationBackgroundView"
+      android:layout_width="60dp"
+      android:layout_height="60dp"
+      android:background="@drawable/bg_btn_call_normal"
+      app:layout_constraintBottom_toBottomOf="@id/rejectButton"
+      app:layout_constraintEnd_toEndOf="@id/rejectButton"
+      app:layout_constraintStart_toStartOf="@id/rejectButton"
+      app:layout_constraintTop_toTopOf="@id/rejectButton" />
+
+    <ImageView
+      android:id="@+id/acceptButton"
+      android:layout_width="60dp"
+      android:layout_height="60dp"
+      android:layout_marginBottom="100dp"
+      android:background="@drawable/bg_btn_call"
+      android:padding="15dp"
+      android:src="@drawable/ic_call_accept"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/guide2"
+      app:layout_constraintStart_toEndOf="@id/guide1" />
+
+    <ImageView
+      android:id="@+id/rejectButton"
+      android:layout_width="60dp"
+      android:layout_height="60dp"
+      android:background="@drawable/bg_btn_call"
+      android:padding="15dp"
+      android:src="@drawable/ic_call_reject"
+      app:layout_constraintBottom_toBottomOf="@id/acceptButton"
+      app:layout_constraintEnd_toStartOf="@id/guide3"
+      app:layout_constraintStart_toEndOf="@id/guide2"
+      app:layout_constraintTop_toTopOf="@id/acceptButton" />
+  </androidx.constraintlayout.motion.widget.MotionLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

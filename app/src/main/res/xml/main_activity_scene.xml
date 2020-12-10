@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+  <Transition
+    motion:autoTransition="animateToEnd"
+    motion:constraintSetEnd="@+id/end"
+    motion:constraintSetStart="@id/start"
+    motion:duration="2000">
+    <KeyFrameSet>
+      <KeyAttribute
+        android:alpha="0.4"
+        motion:framePosition="60"
+        motion:motionTarget="@+id/acceptButtonAnimationBackgroundView" />
+      <KeyAttribute
+        android:alpha="0"
+        motion:framePosition="100"
+        motion:motionTarget="@+id/acceptButtonAnimationBackgroundView" />
+      <KeyAttribute
+        android:alpha="0.4"
+        motion:framePosition="70"
+        motion:motionTarget="@+id/rejectButtonAnimationBackgroundView" />
+      <KeyAttribute
+        android:alpha="0"
+        motion:framePosition="100"
+        motion:motionTarget="@+id/rejectButtonAnimationBackgroundView" />
+    </KeyFrameSet>
+  </Transition>
+  <Transition
+    motion:autoTransition="animateToStart"
+    motion:constraintSetEnd="@id/end"
+    motion:constraintSetStart="@id/start" />
+
+  <ConstraintSet android:id="@+id/start">
+    <Constraint android:id="@id/acceptDragArea">
+      <PropertySet
+        app:applyMotionScene="false"
+        app:visibilityMode="ignore" />
+    </Constraint>
+    <Constraint android:id="@id/rejectDragArea">
+      <PropertySet
+        app:applyMotionScene="false"
+        app:visibilityMode="ignore" />
+    </Constraint>
+
+    <Constraint
+      android:id="@+id/acceptButtonAnimationBackgroundView"
+      android:layout_width="60dp"
+      android:layout_height="60dp"
+      motion:layout_constraintBottom_toBottomOf="@id/acceptButton"
+      motion:layout_constraintEnd_toEndOf="@id/acceptButton"
+      motion:layout_constraintStart_toStartOf="@id/acceptButton"
+      motion:layout_constraintTop_toTopOf="@id/acceptButton" />
+    <Constraint
+      android:id="@+id/rejectButtonAnimationBackgroundView"
+      android:layout_width="60dp"
+      android:layout_height="60dp"
+      motion:layout_constraintBottom_toBottomOf="@id/rejectButton"
+      motion:layout_constraintEnd_toEndOf="@id/rejectButton"
+      motion:layout_constraintStart_toStartOf="@id/rejectButton"
+      motion:layout_constraintTop_toTopOf="@id/rejectButton" />
+  </ConstraintSet>
+
+  <ConstraintSet
+    android:id="@+id/end"
+    app:deriveConstraintsFrom="@id/start">
+    <Constraint
+      android:id="@+id/acceptButtonAnimationBackgroundView"
+      android:layout_width="100dp"
+      android:layout_height="100dp"
+      motion:layout_constraintBottom_toBottomOf="@id/acceptButton"
+      motion:layout_constraintEnd_toEndOf="@id/acceptButton"
+      motion:layout_constraintStart_toStartOf="@id/acceptButton"
+      motion:layout_constraintTop_toTopOf="@id/acceptButton" />
+    <Constraint
+      android:id="@+id/rejectButtonAnimationBackgroundView"
+      android:layout_width="100dp"
+      android:layout_height="100dp"
+      motion:layout_constraintBottom_toBottomOf="@id/rejectButton"
+      motion:layout_constraintEnd_toEndOf="@id/rejectButton"
+      motion:layout_constraintStart_toStartOf="@id/rejectButton"
+      motion:layout_constraintTop_toTopOf="@id/rejectButton" />
+  </ConstraintSet>
+</MotionScene>
