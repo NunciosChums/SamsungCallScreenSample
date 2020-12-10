@@ -1,5 +1,6 @@
 package kr.susemi99.samsungcallscreen
 
+import android.annotation.SuppressLint
 import android.graphics.*
 import android.os.Bundle
 import android.view.MotionEvent
@@ -13,8 +14,7 @@ import kotlin.math.hypot
 
 class MainActivity : AppCompatActivity() {
   private lateinit var binding: MainActivityBinding
-  var touchPosition = Point(0, 0)
-  var canvas = Canvas()
+  private var isTouching = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -39,6 +39,56 @@ class MainActivity : AppCompatActivity() {
     binding.motionLayout.progress = 0f
   }
 
+  private fun onButtonTouch(event: MotionEvent, dragArea: ImageView): Boolean {
+    when (event.action) {
+      MotionEvent.ACTION_DOWN -> {
+        dragArea.visibility = View.VISIBLE
+        stopAnimation()
+      }
+
+      MotionEvent.ACTION_UP -> {
+        dragArea.visibility = View.INVISIBLE
+        startAnimation()
+      }
+    }
+
+    return false
+  }
+
+
+  private fun onDragAreaTouch(view: View, event: MotionEvent, dragArea: ImageView, onOutOfArea: () -> Unit): Boolean {
+    if (view.visibility != View.VISIBLE) {
+      return true
+    }
+
+    val center = Point(view.width / 2, view.height / 2)
+    if (hypot(center.x.toDouble() - event.x, center.y.toDouble() - event.y) > 150 && !isTouching) {
+      return true
+    }
+
+    when (event.action) {
+      MotionEvent.ACTION_DOWN -> isTouching = true
+      MotionEvent.ACTION_UP -> {
+        isTouching = false
+        transparentCenter(dragArea, 0f)
+        view.visibility = View.INVISIBLE
+        startAnimation()
+      }
+      MotionEvent.ACTION_MOVE -> {
+        val radius = hypot(center.x.toDouble() - event.x, center.y.toDouble() - event.y)
+        if ((view.width / 2) <= radius) {
+          view.visibility = View.INVISIBLE
+          onOutOfArea()
+          return true
+        }
+
+        transparentCenter(dragArea, radius.toFloat())
+      }
+    }
+
+    return true
+  }
+
   private fun transparentCenter(imageView: ImageView, radius: Float) {
     imageView.setImageResource(R.drawable.bg_btn_call_drag)
 
@@ -58,7 +108,7 @@ class MainActivity : AppCompatActivity() {
     val halfWidth = imageView.width / 2
     val halfHeight = imageView.height / 2
 
-    canvas = Canvas(bitmap).apply {
+    Canvas(bitmap).apply {
       drawable.setBounds(0, 0, width, height)
       drawable.draw(this)
       drawCircle(halfWidth.toFloat(), halfHeight.toFloat(), radius, paint)
@@ -78,99 +128,23 @@ class MainActivity : AppCompatActivity() {
   /**************************************************************************
    * listener
    **************************************************************************/
+  @SuppressLint("ClickableViewAccessibility")
   private val acceptButtonTouchListener = View.OnTouchListener { _, event ->
-    when (event.action) {
-      MotionEvent.ACTION_DOWN -> {
-        binding.acceptDragArea.visibility = View.VISIBLE
-        stopAnimation()
-      }
-      MotionEvent.ACTION_UP -> {
-        binding.acceptDragArea.visibility = View.INVISIBLE
-        startAnimation()
-      }
-    }
-
-    return@OnTouchListener false
+    return@OnTouchListener onButtonTouch(event, binding.acceptDragArea)
   }
 
+  @SuppressLint("ClickableViewAccessibility")
   private val rejectButtonTouchListener = View.OnTouchListener { _, event ->
-    when (event.action) {
-      MotionEvent.ACTION_DOWN -> {
-        binding.rejectDragArea.visibility = View.VISIBLE
-        stopAnimation()
-      }
-      MotionEvent.ACTION_UP -> {
-        binding.rejectDragArea.visibility = View.INVISIBLE
-        startAnimation()
-      }
-    }
-
-    return@OnTouchListener false
+    return@OnTouchListener onButtonTouch(event, binding.rejectDragArea)
   }
 
+  @SuppressLint("ClickableViewAccessibility")
   private val acceptDragButtonTouchListener = View.OnTouchListener { view, event ->
-    if (view.visibility != View.VISIBLE) {
-      return@OnTouchListener true
-    }
-
-    val center = Point(view.width / 2, view.height / 2)
-    if (hypot(center.x.toDouble() - event.x, center.y.toDouble() - event.y) > 150 && touchPosition.x == 0 && touchPosition.y == 0) {
-      return@OnTouchListener true
-    }
-
-    when (event.action) {
-      MotionEvent.ACTION_DOWN -> touchPosition = Point(event.x.toInt(), event.y.toInt())
-      MotionEvent.ACTION_UP -> {
-        touchPosition = Point(0, 0)
-        transparentCenter(binding.acceptDragArea, 0f)
-        view.visibility = View.INVISIBLE
-        startAnimation()
-      }
-      MotionEvent.ACTION_MOVE -> {
-        val radius = hypot(center.x.toDouble() - event.x, center.y.toDouble() - event.y)
-        if ((view.width / 2) <= radius) {
-          view.visibility = View.INVISIBLE
-          acceptCall()
-          return@OnTouchListener true
-        }
-
-        transparentCenter(binding.acceptDragArea, radius.toFloat())
-      }
-    }
-
-    return@OnTouchListener true
+    return@OnTouchListener onDragAreaTouch(view, event, binding.acceptDragArea) { acceptCall() }
   }
 
+  @SuppressLint("ClickableViewAccessibility")
   private val rejectDragButtonTouchListener = View.OnTouchListener { view, event ->
-    if (view.visibility != View.VISIBLE) {
-      return@OnTouchListener true
-    }
-
-    val center = Point(view.width / 2, view.height / 2)
-    if (hypot(center.x.toDouble() - event.x, center.y.toDouble() - event.y) > 150 && touchPosition.x == 0 && touchPosition.y == 0) {
-      return@OnTouchListener true
-    }
-
-    when (event.action) {
-      MotionEvent.ACTION_DOWN -> touchPosition = Point(event.x.toInt(), event.y.toInt())
-      MotionEvent.ACTION_UP -> {
-        touchPosition = Point(0, 0)
-        transparentCenter(binding.rejectDragArea, 0f)
-        view.visibility = View.INVISIBLE
-        startAnimation()
-      }
-      MotionEvent.ACTION_MOVE -> {
-        val radius = hypot(center.x.toDouble() - event.x, center.y.toDouble() - event.y)
-        if ((view.width / 2) <= radius) {
-          view.visibility = View.INVISIBLE
-          rejectCall()
-          return@OnTouchListener true
-        }
-
-        transparentCenter(binding.rejectDragArea, radius.toFloat())
-      }
-    }
-
-    return@OnTouchListener true
+    return@OnTouchListener onDragAreaTouch(view, event, binding.rejectDragArea) { rejectCall() }
   }
 }

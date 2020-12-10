@@ -97,7 +97,6 @@
       android:id="@+id/acceptButtonAnimationBackgroundView"
       android:layout_width="60dp"
       android:layout_height="60dp"
-      android:alpha="1"
       android:background="@drawable/bg_btn_call_normal"
       app:layout_constraintBottom_toBottomOf="@id/acceptButton"
       app:layout_constraintEnd_toEndOf="@id/acceptButton"
