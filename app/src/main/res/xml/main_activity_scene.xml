@@ -28,11 +28,11 @@
         motion:motionTarget="@+id/acceptButton" />
 
       <KeyAttribute
-        android:alpha="0.67"
+        android:alpha="0.7"
         motion:framePosition="50"
         motion:motionTarget="@+id/acceptButtonAnimationBackgroundView" />
       <KeyAttribute
-        android:alpha="0.33"
+        android:alpha="0.3"
         motion:framePosition="75"
         motion:motionTarget="@+id/acceptButtonAnimationBackgroundView" />
       <KeyAttribute
@@ -41,11 +41,11 @@
         motion:motionTarget="@+id/acceptButtonAnimationBackgroundView" />
 
       <KeyAttribute
-        android:alpha="0.76"
+        android:alpha="0.7"
         motion:framePosition="50"
         motion:motionTarget="@+id/rejectButtonAnimationBackgroundView" />
       <KeyAttribute
-        android:alpha="0.33"
+        android:alpha="0.3"
         motion:framePosition="75"
         motion:motionTarget="@+id/rejectButtonAnimationBackgroundView" />
       <KeyAttribute
