@@ -52,7 +52,6 @@ class MainActivity : AppCompatActivity() {
       MotionEvent.ACTION_DOWN -> {
         downPosition = Point(event.x.toInt(), event.y.toInt())
         transparentCenter(dragArea, 0f)
-        isOutOfDragArea = false
         dragAreaAnimationCompleted = false
         binding.motionLayout.setTransition(transition)
         binding.motionLayout.transitionToEnd()
@@ -67,51 +66,21 @@ class MainActivity : AppCompatActivity() {
         })
       }
 
-      MotionEvent.ACTION_UP -> {
-        startAnimation()
-      }
+      MotionEvent.ACTION_UP -> startAnimation()
 
       MotionEvent.ACTION_MOVE -> {
         if (!dragAreaAnimationCompleted) return
         if (isOutOfDragArea) return
 
-        onDragAreaTouch(event, dragArea, onOutOfArea)
-      }
-    }
-  }
-
-
-  private fun onDragAreaTouch(event: MotionEvent, dragArea: ImageView, onOutOfArea: () -> Unit): Boolean {
-    if (dragArea.visibility != View.VISIBLE) {
-      return true
-    }
-
-    val center = downPosition
-
-    val radius = hypot(center.x.toDouble() - event.x, center.y.toDouble() - event.y)
-
-    when (event.action) {
-      MotionEvent.ACTION_DOWN -> {
-        transparentCenter(dragArea, 0f)
-      }
-
-      MotionEvent.ACTION_UP -> {
-        transparentCenter(dragArea, 0f)
-        startAnimation()
-      }
-
-      MotionEvent.ACTION_MOVE -> {
+        val radius = hypot(downPosition.x.toDouble() - event.x, downPosition.y.toDouble() - event.y)
         if ((dragArea.width / 2) <= radius) {
           isOutOfDragArea = true
           onOutOfArea()
-          return true
+        } else {
+          transparentCenter(dragArea, radius.toFloat())
         }
-
-        transparentCenter(dragArea, radius.toFloat())
       }
     }
-
-    return true
   }
 
   private fun transparentCenter(imageView: ImageView, radius: Float) {

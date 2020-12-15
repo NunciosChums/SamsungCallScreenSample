@@ -1,64 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:motion="http://schemas.android.com/apk/res-auto">
+  xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <Transition
     android:id="@+id/defaultTransition"
-    motion:autoTransition="animateToEnd"
-    motion:constraintSetEnd="@+id/end"
-    motion:constraintSetStart="@id/start"
-    motion:duration="2000">
+    app:autoTransition="animateToEnd"
+    app:constraintSetEnd="@id/end"
+    app:constraintSetStart="@id/start"
+    app:duration="2000">
     <KeyFrameSet>
       <KeyAttribute
         android:alpha="1"
-        motion:framePosition="0"
-        motion:motionTarget="@+id/rejectButton" />
+        app:framePosition="0"
+        app:motionTarget="@+id/rejectButton" />
       <KeyAttribute
         android:alpha="1"
-        motion:framePosition="100"
-        motion:motionTarget="@+id/rejectButton" />
-      <KeyAttribute
-        android:alpha="1"
-        motion:framePosition="0"
-        motion:motionTarget="@+id/acceptButton" />
-      <KeyAttribute
-        android:alpha="1"
-        motion:framePosition="100"
-        motion:motionTarget="@+id/acceptButton" />
+        app:framePosition="0"
+        app:motionTarget="@+id/acceptButton" />
 
       <KeyAttribute
         android:alpha="0.7"
-        motion:framePosition="50"
-        motion:motionTarget="@+id/acceptButtonAnimationBackgroundView" />
+        app:framePosition="50"
+        app:motionTarget="@+id/acceptButtonAnimationBackgroundView" />
       <KeyAttribute
         android:alpha="0.3"
-        motion:framePosition="75"
-        motion:motionTarget="@+id/acceptButtonAnimationBackgroundView" />
+        app:framePosition="75"
+        app:motionTarget="@+id/acceptButtonAnimationBackgroundView" />
       <KeyAttribute
         android:alpha="0"
-        motion:framePosition="100"
-        motion:motionTarget="@+id/acceptButtonAnimationBackgroundView" />
+        app:framePosition="100"
+        app:motionTarget="@+id/acceptButtonAnimationBackgroundView" />
 
       <KeyAttribute
         android:alpha="0.7"
-        motion:framePosition="50"
-        motion:motionTarget="@+id/rejectButtonAnimationBackgroundView" />
+        app:framePosition="50"
+        app:motionTarget="@+id/rejectButtonAnimationBackgroundView" />
       <KeyAttribute
         android:alpha="0.3"
-        motion:framePosition="75"
-        motion:motionTarget="@+id/rejectButtonAnimationBackgroundView" />
+        app:framePosition="75"
+        app:motionTarget="@+id/rejectButtonAnimationBackgroundView" />
       <KeyAttribute
         android:alpha="0"
-        motion:framePosition="100"
-        motion:motionTarget="@+id/rejectButtonAnimationBackgroundView" />
+        app:framePosition="100"
+        app:motionTarget="@+id/rejectButtonAnimationBackgroundView" />
     </KeyFrameSet>
   </Transition>
 
   <Transition
-    motion:autoTransition="animateToStart"
-    motion:constraintSetEnd="@id/end"
-    motion:constraintSetStart="@id/start" />
+    app:autoTransition="animateToStart"
+    app:constraintSetEnd="@id/end"
+    app:constraintSetStart="@id/start" />
 
   <ConstraintSet android:id="@+id/start">
     <Constraint android:id="@+id/acceptButton">
@@ -76,18 +67,18 @@
       android:id="@+id/acceptButtonAnimationBackgroundView"
       android:layout_width="60dp"
       android:layout_height="60dp"
-      motion:layout_constraintBottom_toBottomOf="@id/acceptButton"
-      motion:layout_constraintEnd_toEndOf="@id/acceptButton"
-      motion:layout_constraintStart_toStartOf="@id/acceptButton"
-      motion:layout_constraintTop_toTopOf="@id/acceptButton" />
+      app:layout_constraintBottom_toBottomOf="@id/acceptButton"
+      app:layout_constraintEnd_toEndOf="@id/acceptButton"
+      app:layout_constraintStart_toStartOf="@id/acceptButton"
+      app:layout_constraintTop_toTopOf="@id/acceptButton" />
     <Constraint
       android:id="@+id/rejectButtonAnimationBackgroundView"
       android:layout_width="60dp"
       android:layout_height="60dp"
-      motion:layout_constraintBottom_toBottomOf="@id/rejectButton"
-      motion:layout_constraintEnd_toEndOf="@id/rejectButton"
-      motion:layout_constraintStart_toStartOf="@id/rejectButton"
-      motion:layout_constraintTop_toTopOf="@id/rejectButton" />
+      app:layout_constraintBottom_toBottomOf="@id/rejectButton"
+      app:layout_constraintEnd_toEndOf="@id/rejectButton"
+      app:layout_constraintStart_toStartOf="@id/rejectButton"
+      app:layout_constraintTop_toTopOf="@id/rejectButton" />
   </ConstraintSet>
 
   <ConstraintSet
@@ -97,35 +88,35 @@
       android:id="@+id/acceptButtonAnimationBackgroundView"
       android:layout_width="100dp"
       android:layout_height="100dp"
-      motion:layout_constraintBottom_toBottomOf="@id/acceptButton"
-      motion:layout_constraintEnd_toEndOf="@id/acceptButton"
-      motion:layout_constraintStart_toStartOf="@id/acceptButton"
-      motion:layout_constraintTop_toTopOf="@id/acceptButton" />
+      app:layout_constraintBottom_toBottomOf="@id/acceptButton"
+      app:layout_constraintEnd_toEndOf="@id/acceptButton"
+      app:layout_constraintStart_toStartOf="@id/acceptButton"
+      app:layout_constraintTop_toTopOf="@id/acceptButton" />
     <Constraint
       android:id="@+id/rejectButtonAnimationBackgroundView"
       android:layout_width="100dp"
       android:layout_height="100dp"
-      motion:layout_constraintBottom_toBottomOf="@id/rejectButton"
-      motion:layout_constraintEnd_toEndOf="@id/rejectButton"
-      motion:layout_constraintStart_toStartOf="@id/rejectButton"
-      motion:layout_constraintTop_toTopOf="@id/rejectButton" />
+      app:layout_constraintBottom_toBottomOf="@id/rejectButton"
+      app:layout_constraintEnd_toEndOf="@id/rejectButton"
+      app:layout_constraintStart_toStartOf="@id/rejectButton"
+      app:layout_constraintTop_toTopOf="@id/rejectButton" />
   </ConstraintSet>
 
   <!-- 수락 버튼 누른 상태 -->
   <Transition
     android:id="@+id/acceptPressTransition"
-    motion:constraintSetEnd="@id/acceptPressEnd"
-    motion:constraintSetStart="@id/acceptPressStart"
-    motion:duration="200">
+    app:constraintSetEnd="@id/acceptPressEnd"
+    app:constraintSetStart="@id/acceptPressStart"
+    app:duration="200">
     <KeyFrameSet>
       <KeyAttribute
         android:alpha="0.5"
-        motion:framePosition="0"
-        motion:motionTarget="@+id/rejectButton" />
+        app:framePosition="0"
+        app:motionTarget="@+id/rejectButton" />
       <KeyAttribute
         android:alpha="0.5"
-        motion:framePosition="100"
-        motion:motionTarget="@+id/rejectButton" />
+        app:framePosition="100"
+        app:motionTarget="@+id/rejectButton" />
     </KeyFrameSet>
   </Transition>
 
@@ -173,18 +164,18 @@
   <!-- 거절 버튼 누른 상태 -->
   <Transition
     android:id="@+id/rejectPressTransition"
-    motion:constraintSetEnd="@id/rejectPressEnd"
-    motion:constraintSetStart="@id/rejectPressStart"
-    motion:duration="200">
+    app:constraintSetEnd="@id/rejectPressEnd"
+    app:constraintSetStart="@id/rejectPressStart"
+    app:duration="200">
     <KeyFrameSet>
       <KeyAttribute
         android:alpha="0.5"
-        motion:framePosition="0"
-        motion:motionTarget="@+id/acceptButton" />
+        app:framePosition="0"
+        app:motionTarget="@+id/acceptButton" />
       <KeyAttribute
         android:alpha="0.5"
-        motion:framePosition="100"
-        motion:motionTarget="@+id/acceptButton" />
+        app:framePosition="100"
+        app:motionTarget="@+id/acceptButton" />
     </KeyFrameSet>
   </Transition>
 
