@@ -97,8 +97,7 @@ class MainActivity : AppCompatActivity() {
 
       MotionEvent.ACTION_UP -> {
         transparentCenter(dragArea, 0f)
-        binding.motionLayout.setTransition(R.id.defaultTransition)
-        binding.motionLayout.transitionToEnd()
+        startAnimation()
       }
 
       MotionEvent.ACTION_MOVE -> {
