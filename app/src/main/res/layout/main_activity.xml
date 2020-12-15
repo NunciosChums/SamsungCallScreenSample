@@ -32,34 +32,49 @@
   <androidx.constraintlayout.motion.widget.MotionLayout
     android:id="@+id/motionLayout"
     android:layout_width="match_parent"
-    android:layout_height="300dp"
+    android:layout_height="wrap_content"
     app:layoutDescription="@xml/main_activity_scene"
     app:layout_constraintBottom_toBottomOf="parent">
 
     <ImageView
-      android:id="@+id/acceptDragArea"
+      android:id="@+id/fixHeightDragArea"
       android:layout_width="300dp"
       android:layout_height="300dp"
       android:scaleType="fitXY"
-      android:src="@drawable/bg_btn_call_drag"
       android:visibility="invisible"
       app:layout_constraintBottom_toBottomOf="@id/acceptButton"
       app:layout_constraintEnd_toEndOf="@id/acceptButton"
       app:layout_constraintStart_toStartOf="@id/acceptButton"
+      app:layout_constraintTop_toTopOf="@id/acceptButton" />
+
+    <ImageView
+      android:id="@+id/acceptDragArea"
+      android:layout_width="60dp"
+      android:layout_height="60dp"
+      android:scaleType="fitXY"
+      android:src="@drawable/bg_btn_call_drag"
+      android:visibility="visible"
+      app:layout_constraintBottom_toBottomOf="@id/acceptButton"
+      app:layout_constraintEnd_toEndOf="@id/acceptButton"
+      app:layout_constraintStart_toStartOf="@id/acceptButton"
       app:layout_constraintTop_toTopOf="@id/acceptButton"
+      tools:layout_height="300dp"
+      tools:layout_width="300dp"
       tools:visibility="visible" />
 
     <ImageView
       android:id="@+id/rejectDragArea"
-      android:layout_width="300dp"
-      android:layout_height="300dp"
+      android:layout_width="60dp"
+      android:layout_height="60dp"
       android:scaleType="fitXY"
       android:src="@drawable/bg_btn_call_drag"
-      android:visibility="invisible"
+      android:visibility="visible"
       app:layout_constraintBottom_toBottomOf="@id/rejectButton"
       app:layout_constraintEnd_toEndOf="@id/rejectButton"
       app:layout_constraintStart_toStartOf="@id/rejectButton"
       app:layout_constraintTop_toTopOf="@id/rejectButton"
+      tools:layout_height="300dp"
+      tools:layout_width="300dp"
       tools:visibility="visible" />
 
     <View
@@ -97,7 +112,7 @@
       android:id="@+id/acceptButtonAnimationBackgroundView"
       android:layout_width="60dp"
       android:layout_height="60dp"
-      android:background="@drawable/bg_btn_call_normal"
+      android:background="@drawable/bg_btn_call"
       app:layout_constraintBottom_toBottomOf="@id/acceptButton"
       app:layout_constraintEnd_toEndOf="@id/acceptButton"
       app:layout_constraintStart_toStartOf="@id/acceptButton"
@@ -107,7 +122,7 @@
       android:id="@+id/rejectButtonAnimationBackgroundView"
       android:layout_width="60dp"
       android:layout_height="60dp"
-      android:background="@drawable/bg_btn_call_normal"
+      android:background="@drawable/bg_btn_call"
       app:layout_constraintBottom_toBottomOf="@id/rejectButton"
       app:layout_constraintEnd_toEndOf="@id/rejectButton"
       app:layout_constraintStart_toStartOf="@id/rejectButton"

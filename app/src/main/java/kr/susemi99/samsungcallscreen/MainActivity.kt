@@ -7,14 +7,17 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.motion.widget.MotionLayout
 import kr.susemi99.samsungcallscreen.databinding.MainActivityBinding
 import kotlin.math.hypot
 
-
 class MainActivity : AppCompatActivity() {
   private lateinit var binding: MainActivityBinding
-  private var isTouching = false
+  private var dragAreaAnimationCompleted = false
+  private var downPosition = Point()
+  private var isOutOfDragArea = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -26,58 +29,81 @@ class MainActivity : AppCompatActivity() {
 
     binding.acceptButton.setOnTouchListener(acceptButtonTouchListener)
     binding.rejectButton.setOnTouchListener(rejectButtonTouchListener)
-
-    binding.acceptDragArea.setOnTouchListener(acceptDragButtonTouchListener)
-    binding.rejectDragArea.setOnTouchListener(rejectDragButtonTouchListener)
   }
 
   private fun startAnimation() {
+    binding.motionLayout.setTransition(R.id.defaultTransition)
+    binding.motionLayout.setTransitionListener(null)
     binding.motionLayout.transitionToEnd()
+    isOutOfDragArea = false
+    dragAreaAnimationCompleted = false
   }
 
   private fun stopAnimation() {
     binding.motionLayout.progress = 0f
   }
 
-  private fun onButtonTouch(event: MotionEvent, dragArea: ImageView): Boolean {
+  private fun onButtonTouch(event: MotionEvent, dragArea: ImageView, @IdRes transition: Int, onOutOfArea: () -> Unit) {
+    if (isOutOfDragArea) {
+      return
+    }
+
     when (event.action) {
       MotionEvent.ACTION_DOWN -> {
-        dragArea.visibility = View.VISIBLE
-        stopAnimation()
+        downPosition = Point(event.x.toInt(), event.y.toInt())
+        transparentCenter(dragArea, 0f)
+        isOutOfDragArea = false
+        dragAreaAnimationCompleted = false
+        binding.motionLayout.setTransition(transition)
+        binding.motionLayout.transitionToEnd()
+        binding.motionLayout.setTransitionListener(object : MotionLayout.TransitionListener {
+          override fun onTransitionStarted(p0: MotionLayout?, p1: Int, p2: Int) {}
+          override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {}
+          override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {
+            dragAreaAnimationCompleted = true
+          }
+
+          override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {}
+        })
       }
 
       MotionEvent.ACTION_UP -> {
-        dragArea.visibility = View.INVISIBLE
         startAnimation()
       }
-    }
 
-    return false
+      MotionEvent.ACTION_MOVE -> {
+        if (!dragAreaAnimationCompleted) return
+        if (isOutOfDragArea) return
+
+        onDragAreaTouch(event, dragArea, onOutOfArea)
+      }
+    }
   }
 
 
-  private fun onDragAreaTouch(view: View, event: MotionEvent, dragArea: ImageView, onOutOfArea: () -> Unit): Boolean {
-    if (view.visibility != View.VISIBLE) {
+  private fun onDragAreaTouch(event: MotionEvent, dragArea: ImageView, onOutOfArea: () -> Unit): Boolean {
+    if (dragArea.visibility != View.VISIBLE) {
       return true
     }
 
-    val center = Point(view.width / 2, view.height / 2)
-    if (hypot(center.x.toDouble() - event.x, center.y.toDouble() - event.y) > 150 && !isTouching) {
-      return true
-    }
+    val center = downPosition
+
+    val radius = hypot(center.x.toDouble() - event.x, center.y.toDouble() - event.y)
 
     when (event.action) {
-      MotionEvent.ACTION_DOWN -> isTouching = true
-      MotionEvent.ACTION_UP -> {
-        isTouching = false
+      MotionEvent.ACTION_DOWN -> {
         transparentCenter(dragArea, 0f)
-        view.visibility = View.INVISIBLE
-        startAnimation()
       }
+
+      MotionEvent.ACTION_UP -> {
+        transparentCenter(dragArea, 0f)
+        binding.motionLayout.setTransition(R.id.defaultTransition)
+        binding.motionLayout.transitionToEnd()
+      }
+
       MotionEvent.ACTION_MOVE -> {
-        val radius = hypot(center.x.toDouble() - event.x, center.y.toDouble() - event.y)
-        if ((view.width / 2) <= radius) {
-          view.visibility = View.INVISIBLE
+        if ((dragArea.width / 2) <= radius) {
+          isOutOfDragArea = true
           onOutOfArea()
           return true
         }
@@ -119,10 +145,12 @@ class MainActivity : AppCompatActivity() {
 
   private fun acceptCall() {
     Toast.makeText(this, "accept call", Toast.LENGTH_SHORT).show()
+    stopAnimation()
   }
 
   private fun rejectCall() {
     Toast.makeText(this, "reject call", Toast.LENGTH_SHORT).show()
+    stopAnimation()
   }
 
   /**************************************************************************
@@ -130,21 +158,13 @@ class MainActivity : AppCompatActivity() {
    **************************************************************************/
   @SuppressLint("ClickableViewAccessibility")
   private val acceptButtonTouchListener = View.OnTouchListener { _, event ->
-    return@OnTouchListener onButtonTouch(event, binding.acceptDragArea)
+    onButtonTouch(event, binding.acceptDragArea, R.id.acceptPressTransition) { acceptCall() }
+    return@OnTouchListener true
   }
 
   @SuppressLint("ClickableViewAccessibility")
   private val rejectButtonTouchListener = View.OnTouchListener { _, event ->
-    return@OnTouchListener onButtonTouch(event, binding.rejectDragArea)
-  }
-
-  @SuppressLint("ClickableViewAccessibility")
-  private val acceptDragButtonTouchListener = View.OnTouchListener { view, event ->
-    return@OnTouchListener onDragAreaTouch(view, event, binding.acceptDragArea) { acceptCall() }
-  }
-
-  @SuppressLint("ClickableViewAccessibility")
-  private val rejectDragButtonTouchListener = View.OnTouchListener { view, event ->
-    return@OnTouchListener onDragAreaTouch(view, event, binding.rejectDragArea) { rejectCall() }
+    onButtonTouch(event, binding.rejectDragArea, R.id.rejectPressTransition) { rejectCall() }
+    return@OnTouchListener true
   }
 }
